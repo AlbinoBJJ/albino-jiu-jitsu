@@ -52,17 +52,17 @@ h1, h2, h3, .brand-font {
     box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
 }
 
-/* --- Round Logo Wrapper --- */
 .logo-wrapper-round {
-    width: 100px;
-    height: 100px;
-    background-color: rgba(255, 255, 255, 0.1); /* Subtle white background */
+    width: 55px;
+    height: 55px;
+    background-color: rgba(255, 255, 255, 0.1); 
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0; 
 }
 
 .logo-wrapper-round img {
@@ -74,8 +74,7 @@ h1, h2, h3, .brand-font {
 /* --- Hero Section --- */
 .hero {
     padding: 120px 0 80px;
-    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
-                url('hero-background.jpg') center/cover;
+    background-color: var(--keisei-black); /* Fundo preto sólido oficial */
     text-align: center;
     border-bottom: 4px solid var(--keisei-gold);
 }
