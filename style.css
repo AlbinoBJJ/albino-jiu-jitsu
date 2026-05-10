@@ -80,8 +80,10 @@ h1, h2, h3, .brand-font {
 }
 
 .hero h1 {
-    font-size: clamp(2.5rem, 8vw, 4.5rem);
+
+    font-size: clamp(2rem, 6.5vw, 3.8rem);
     margin-bottom: 20px;
+    line-height: 1.2;
 }
 
 /* --- Progress Bar --- */
