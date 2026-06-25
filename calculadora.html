@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALVO MAKER - Simulador de Aulas</title>
+    <!-- Tailwind CSS para design moderno e responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen py-8 px-4">
+
+    <div class="max-w-md mx-auto bg-slate-800 rounded-3xl shadow-2xl border border-slate-700/50 overflow-hidden">
+        
+        <!-- Cabeçalho -->
+        <div class="bg-slate-950 px-6 py-6 border-b border-slate-700/50 text-center">
+            <h1 class="text-xl font-bold tracking-tight text-white">CALCULADORA</h1>
+            <p class="text-xs text-emerald-400 mt-1 font-semibold">Simulador de Custos & Retorno de Aulas</p>
+        </div>
+
+        <div class="p-6 space-y-6">
+            
+            <!-- SEÇÃO DE INPUTS (Campos Editáveis) -->
+            <div class="space-y-4">
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Configurações da Turma</h2>
+                
+                <!-- Mensalidade -->
+                <div>
+                    <label class="block text-xs text-slate-300 mb-1" for="mensalidade">Mensalidade por Aluno (R$)</label>
+                    <input type="number" id="mensalidade" value="130" oninput="calcular()" 
+                           class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <!-- Divisão Academia -->
+                <div>
+                    <label class="block text-xs text-slate-300 mb-1" for="split">Porcentagem da Academia (%)</label>
+                    <input type="number" id="split" value="50" oninput="calcular()" 
+                           class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <!-- Gasto com Moto -->
+                <div>
+                    <label class="block text-xs text-slate-300 mb-1" for="moto">Gasto Fixo Mensal (transporte, alimentação, ...) (R$)</label>
+                    <input type="number" id="moto" value="170" oninput="calcular()" 
+                           class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <!-- Quantidade de Alunos -->
+                <div>
+                    <label class="block text-xs text-slate-300 mb-1" for="alunos">Quantidade Atual de Alunos</label>
+                    <input type="number" id="alunos" value="14" oninput="calcular()" 
+                           class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+            </div>
+
+            <hr class="border-slate-700/50">
+
+            <!-- SEÇÃO DE OUTPUTS (Resultados Calculados) -->
+            <div class="space-y-4">
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Resultados e Análise</h2>
+
+                <!-- Métricas Rápidas -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-slate-900/50 p-3 rounded-2xl border border-slate-700/30">
+                        <p class="text-[10px] text-slate-400 uppercase font-semibold">Cota por Aluno</p>
+                        <p id="cotaTxt" class="text-lg font-bold text-slate-100 mt-0.5">R$ 65,00</p>
+                    </div>
+                    <div class="bg-slate-900/50 p-3 rounded-2xl border border-slate-700/30">
+                        <p class="text-[10px] text-slate-400 uppercase font-semibold">Alunos para Empatar</p>
+                        <p id="breakevenTxt" class="text-lg font-bold text-amber-400 mt-0.5">2.6 alunos</p>
+                    </div>
+                </div>
+
+                <!-- Resumo Financeiro Geral -->
+                <div class="bg-slate-900 rounded-2xl p-4 border border-slate-700/60 space-y-2.5">
+                    <div class="flex justify-between text-xs">
+                        <span class="text-slate-400">Faturamento Bruto:</span>
+                        <span id="faturamentoTxt" class="font-medium text-slate-200">R$ 1.820,00</span>
+                    </div>
+                    <div class="flex justify-between text-xs">
+                        <span class="text-slate-400">Repasse da Academia:</span>
+                        <span id="repasseTxt" class="font-medium text-rose-400">- R$ 910,00</span>
+                    </div>
+                    <div class="flex justify-between text-xs">
+                        <span class="text-slate-400">Despesa da Moto:</span>
+                        <span id="motoTxt" class="font-medium text-rose-400">- R$ 170,00</span>
+                    </div>
+                    <div class="border-t border-slate-800 my-2 pt-2 flex justify-between items-center">
+                        <span class="text-sm font-bold text-slate-300">Lucro Líquido Real:</span>
+                        <span id="lucroTxt" class="text-lg font-extrabold text-emerald-400">R$ 740,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTÕES DE AÇÃO -->
+            <div class="space-y-2 pt-2">
+                <button onclick="exportarCSV()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-emerald-900/20 text-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Exportar para Google Sheets (CSV)
+                </button>
+            </div>
+            <div class="pt-4 mt-2 border-t border-slate-700/50 text-center">
+                <p class="text-[11px] text-slate-500 font-semibold tracking-wider uppercase">Desenvolvido por Lucas "Albino" Brito</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calcular() {
+            // Obtém valores dos inputs
+            const mensalidade = parseFloat(document.getElementById('mensalidade').value) || 0;
+            const splitPercent = parseFloat(document.getElementById('split').value) || 0;
+            const custoMoto = parseFloat(document.getElementById('moto').value) || 0;
+            const qtdAlunos = parseInt(document.getElementById('alunos').value) || 0;
+
+            // Fórmulas
+            const cotaProfessor = mensalidade * (1 - (splitPercent / 100));
+            const breakeven = cotaProfessor > 0 ? (custoMoto / cotaProfessor) : 0;
+            const faturamentoBruto = mensalidade * qtdAlunos;
+            const repasseAcademia = faturamentoBruto * (splitPercent / 100);
+            const lucroLiquido = (faturamentoBruto - repasseAcademia) - custoMoto;
+
+            // Formatação de Moeda
+            const formatarMoeda = (valor) => {
+                return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            };
+
+            // Atualiza tela
+            document.getElementById('cotaTxt').innerText = formatarMoeda(cotaProfessor);
+            document.getElementById('breakevenTxt').innerText = breakeven.toFixed(1) + " alunos";
+            document.getElementById('faturamentoTxt').innerText = formatarMoeda(faturamentoBruto);
+            document.getElementById('repasseTxt').innerText = "- " + formatarMoeda(repasseAcademia);
+            document.getElementById('motoTxt').innerText = "- " + formatarMoeda(custoMoto);
+            
+            const lucroElement = document.getElementById('lucroTxt');
+            lucroElement.innerText = formatarMoeda(lucroLiquido);
+            
+            if (lucroLiquido < 0) {
+                lucroElement.className = "text-lg font-extrabold text-rose-500";
+            } else if (lucroLiquido === 0) {
+                lucroElement.className = "text-lg font-extrabold text-slate-300";
+            } else {
+                lucroElement.className = "text-lg font-extrabold text-emerald-400";
+            }
+        }
+
+        function exportarCSV() {
+            const mensalidade = document.getElementById('mensalidade').value;
+            const split = document.getElementById('split').value;
+            const moto = document.getElementById('moto').value;
+            const alunos = document.getElementById('alunos').value;
+
+            const cota = mensalidade * (1 - (split / 100));
+            const breakeven = cota > 0 ? (moto / cota) : 0;
+            const faturamento = mensalidade * alunos;
+            const repasse = faturamento * (split / 100);
+            const lucro = (faturamento - repasse) - moto;
+
+            // Monta o arquivo CSV (usando ponto e vírgula como separador para o Excel/Google Sheets brasileiro reconhecer as colunas)
+            let csvContent = "\uFEFF"; // BOM para evitar problemas com caracteres especiais (como R$)
+            csvContent += "Indicador;Valor\r\n";
+            csvContent += `Mensalidade por Aluno;R$ ${mensalidade}\r\n`;
+            csvContent += `Porcentagem da Academia;${split}%\r\n`;
+            csvContent += `Sua Cota por Aluno;R$ ${cota.toFixed(2)}\r\n`;
+            csvContent += `Gasto Mensal com Moto;R$ ${moto}\r\n`;
+            csvContent += `Alunos para Empatar (Ponto de Equilíbrio);${breakeven.toFixed(2)}\r\n`;
+            csvContent += `Quantidade de Alunos da Turma;${alunos}\r\n`;
+            csvContent += `Faturamento Total da Turma;R$ ${faturamento.toFixed(2)}\r\n`;
+            csvContent += `Repasse para a Academia;R$ ${repasse.toFixed(2)}\r\n`;
+            csvContent += `LUCRO LIQUIDO REAL NO BOLSO;R$ ${lucro.toFixed(2)}\r\n`;
+
+            // Cria o link para baixar o arquivo
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", "simulacao_jiujitsu_alvo_maker.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Executa o cálculo inicial no carregamento
+        calcular();
+    </script>
+</body>
+</html>
